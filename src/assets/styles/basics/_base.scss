@@ -18,6 +18,10 @@ body {
     margin: 0;
     margin: auto;
     overflow-x: hidden;
+    background-color: $clr1;
+    color: $clr2;
+    // background-image: linear-gradient(to bottom right, $clr1, $clr4);
+    // background-color: #551155;
 }
 
 h1, h2, h3, h4, h5, h6 {

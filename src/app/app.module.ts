@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { NationIndexComponent } from './pages/nation-index/nation-index.component';
 import { NationListComponent } from './cmps/nation-list/nation-list.component';
 import { NationPreviewComponent } from './cmps/nation-preview/nation-preview.component';
+import { AppHeaderComponent } from './cmps/app-header/app-header.component';
+import { NaturalTypePipe } from './pipes/natural-type.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { NationPreviewComponent } from './cmps/nation-preview/nation-preview.com
     HomePageComponent,
     NationIndexComponent,
     NationListComponent,
-    NationPreviewComponent
+    NationPreviewComponent,
+    AppHeaderComponent,
+    NaturalTypePipe
   ],
   imports: [
     BrowserModule,

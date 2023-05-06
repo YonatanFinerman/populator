@@ -1,0 +1,13 @@
+@import "../../../assets/styles/setup/variables";
+@import "../../../assets/styles/setup/mixins";
+@import "../../../assets/styles/basics/helpers";
+
+.nation-preview{
+    font-size: 1.4rem;
+    border-bottom: 4px solid $clr4;
+
+    td{
+        width: 33%;
+        padding: 1rem 2rem;
+    }
+}

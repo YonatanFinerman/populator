@@ -1,0 +1,91 @@
+@import "../../../assets/styles/setup/variables";
+@import "../../../assets/styles/setup/mixins";
+@import "../../../assets/styles/setup/functions";
+@import "../../../assets/styles/basics/helpers";
+
+.home-page {
+    gap: 40px;
+    flex-direction: column;
+
+    @include for-normal-layout {
+        flex-direction: row; 
+    }
+
+    img {
+        width: 100%;
+
+        @include for-normal-layout {
+            width: 50%;
+        }
+    }
+
+    .about-info {
+        color: $clr2;
+        max-width: 100%;
+
+        @include for-mobile-layout {
+            max-width: 80%;
+        }
+        @include for-normal-layout {
+            max-width: 50%;
+        }
+
+        
+        h1 {
+            font-size: rem(50px);
+            margin: 30px 0;
+            text-align: center;
+
+            @include for-normal-layout {
+                text-align: left; 
+                margin: 50px 0; 
+            }
+            @include for-normal-layout {
+                font-size: rem(76px);  
+            }
+            
+            @include for-wide-layout {
+                font-size: rem(100px);
+            }
+        }
+
+        p,
+        button {
+            font-size: 1.5rem;  
+            @include for-normal-layout {
+                font-size: 1.75rem;    
+            }
+            
+            @include for-wide-layout {
+                font-size: 2.75rem; 
+            }
+        }
+
+        button {
+            padding: 10px 30px;
+            margin-top:1.25rem;
+            background-color: $clr4;
+            color: $clr2;
+            transition: 0.3s;
+            animation: animateDown infinite 1.5s;
+
+            &:hover {
+                background-color: $clr2;
+                color: $clr4;
+            }
+        }
+        @keyframes animateDown {
+            0%, 20%, 50%, 80%, 100%{
+                transform: translateY(0);
+            }
+        
+            40% {
+                transform: translateY(5px);
+            }
+        
+            60% {
+                transform: translateY(3px);
+            }
+        }
+    }
+}
