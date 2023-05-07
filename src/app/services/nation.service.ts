@@ -41,22 +41,34 @@ export class NationService {
         .subscribe(ans => {
           this._nationsDb = this.loadFromStorage('nationDB')
           nations = this._nationsDb
+          this._nations$.next(nations);
         })
+    }
+    else{
+      console.log(nations, 'bobo')
+      this._nations$.next(nations);
     }
     // const filterBy = this._nationFilter$.value
     // const nations = this._nationsDb.filter(({ name }) => {
     //     return name.toLowerCase().includes(filterBy.term.toLowerCase());
     // });
-    console.log(nations, 'bobo')
-    this._nations$.next(nations);
-
+  
   }
 
   public LoadNations() {
-
-    return this.http.get<{ data: Nation[] }>('https://datausa.io/api/data?drilldowns=State&measures=Population&year=latest')
+    return this.http.get<{ data: Nation[] }>('https://datausa.io/api/data?drilldowns=State&measures=Population&year=all')
       .pipe(
         map(res => res.data),
+        map(res=>{
+          let nations :Nation[] = []
+          for(let i=0; i<52;i++){
+            let currNation = res.filter(nation=>res[i]['ID State']===nation['ID State'])
+            let convertedStats = currNation.map(nation=> {return {year:nation.Year,population:nation.Population}})
+            let convertedNation = {...res[i], populationStats:convertedStats}
+            nations.push(convertedNation)
+          }
+          return nations
+        }),
         tap(res1 => this.saveToStorage('nationDB', res1)),
         tap(res1 => console.log(res1, 'brbr')),
         retry(1),
@@ -66,6 +78,7 @@ export class NationService {
         })
       )
   }
+
 
   // public shouldAdoptNation() {
   //     return this.http.get<{ answer: string }>('https://yesno.wtf/api')

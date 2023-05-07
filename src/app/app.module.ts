@@ -11,6 +11,8 @@ import { NationListComponent } from './cmps/nation-list/nation-list.component';
 import { NationPreviewComponent } from './cmps/nation-preview/nation-preview.component';
 import { AppHeaderComponent } from './cmps/app-header/app-header.component';
 import { NaturalTypePipe } from './pipes/natural-type.pipe';
+import { AvrGrowthPipe } from './pipes/avr-growth.pipe';
+import { NationFilterComponent } from './cmps/nation-filter/nation-filter.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { NaturalTypePipe } from './pipes/natural-type.pipe';
     NationListComponent,
     NationPreviewComponent,
     AppHeaderComponent,
-    NaturalTypePipe
+    NaturalTypePipe,
+    AvrGrowthPipe,
+    NationFilterComponent
   ],
   imports: [
     BrowserModule,
