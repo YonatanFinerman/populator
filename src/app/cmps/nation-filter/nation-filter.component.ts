@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'nation-filter',
@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class NationFilterComponent {
 
+  @Input() isFilterModalOpen! : boolean
+  @Output() closeModal = new EventEmitter()
+
+  onCloseModal() { 
+    this.closeModal.emit()
+  }
+
+ 
 }

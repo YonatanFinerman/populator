@@ -1,0 +1,48 @@
+@import "../../../assets/styles/basics/helpers";
+@import "../../../assets/styles/setup/variables";
+@import "../../../assets/styles/setup/mixins";
+
+.nation-filter-modal {
+
+    color: $clr4;
+    background-color: $clr2;
+    width: 560px;
+    border-radius: 8px;
+    z-index: -1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.3s ease-in;
+    height: 0;
+    opacity: 0;
+    box-shadow: $shadow1;
+    padding: 1rem;
+
+    &.open {
+        opacity: 1;
+        z-index: 5;
+        height: 500px;
+
+    }
+    header{
+        position: relative;
+        // padding: 1rem 0;
+        border-bottom: 1px solid $clr4;
+
+        h3{
+            font-size: 1.4rem;
+            padding: 1rem;
+            
+        }
+        .close-modal-btn{
+            position: absolute;
+            left: 0;
+            background: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: $clr4;
+        }
+    }
+
+}

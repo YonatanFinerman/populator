@@ -1,1 +1,14 @@
-<p>nation-filter works!</p>
+<section class="nation-filter-modal" [class.open]="isFilterModalOpen">
+    
+    <header class="flex align-center justify-center">
+        <h3>Filter States</h3>
+        <button class="close-modal-btn" (click)="onCloseModal()">
+            x
+        </button>
+    </header>
+    
+    <div class="modal-content">
+        <input type="text" placeholder="Search state...">
+        <input type="checkbox">
+    </div>
+</section>

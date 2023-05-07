@@ -1,4 +1,11 @@
-<!-- <p>nation-index works!</p>
-<p>{{nations$|async |json}}</p> -->
-<!-- <p>{{ans | json}}</p> -->
+
+
+<div class="nation-page-title-cont">
+<h2>USA states population</h2>
+<button (click)="onToggleFilterModal()" class="open-filter-btn">Filter</button>
+</div>
+
+<div class="shadow" (click)="onToggleFilterModal()" [class.open]="isFilterModalOpen"></div>
+    
+<nation-filter (closeModal)="onToggleFilterModal()" [isFilterModalOpen]="isFilterModalOpen"></nation-filter>
 <nation-list [nations]="nations$ | async"></nation-list>
