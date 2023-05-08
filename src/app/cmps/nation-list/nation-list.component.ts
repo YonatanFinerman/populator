@@ -10,4 +10,8 @@ export class NationListComponent {
 
   @Input() nations!: Nation[] | null
   // @Input() pets!: Pet[] | null
+
+  trackByFn(idx:number,nation:Nation){
+    return nation['ID State']
+  }
 }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Nation } from 'src/app/models/nation.model';
+import { Nation, NationFilter } from 'src/app/models/nation.model';
 import { NationService } from 'src/app/services/nation.service';
 
 
@@ -20,6 +20,7 @@ export class NationIndexComponent implements OnInit {
 
 
   nations$!: Observable<Nation[]>
+  nationFilter!:NationFilter
   isFilterModalOpen = false
 
   ngOnInit(): void {

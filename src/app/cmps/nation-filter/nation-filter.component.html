@@ -3,12 +3,35 @@
     <header class="flex align-center justify-center">
         <h3>Filter States</h3>
         <button class="close-modal-btn" (click)="onCloseModal()">
-            x
+            ✖
         </button>
     </header>
     
-    <div class="modal-content">
-        <input type="text" placeholder="Search state...">
-        <input type="checkbox">
-    </div>
+    <form #form="ngForm" class="modal-content" (ngSubmit)="onFilterClick(form)">
+        <div class="search-state">
+            <label for="stateName">Search state:</label>
+            <input ngModel name="stateName" id="stateName" type="text" class="search-input" placeholder="Search state...">
+            <button type="button" (click)="onSearchState(form.value.stateName)" class="search-btn btn-main">Search</button>
+        </div>
+
+              <div class="filter">
+
+                <label for="sortBy">Sort states:</label>
+                <select ngModel name="sortBy" id="sortBy" class="select-input">
+                  <option value="alphabet">Alphabet</option>
+                  <option value="reversedAlphabet">Reversed alphabet</option>
+                  <option value="mostPopulated">Most Populated</option>
+                  <option value="leastPopulated">Least Populated</option>
+                </select>
+
+                  <label for="maxPopulation">Max labelopulation:</label>
+                  <div class="range-picker flex align-center justify-center">
+                      <p>1M</p>
+                      <input ngModel name="maxPopulation" id="maxPopulation" type="range" min="1000000" max="40000000" class="range-input">
+                      <p>40M</p>
+                  </div>
+
+                  <button class="filter-btn btn-main">Filter</button>           
+            </div>
+    </form>
 </section>

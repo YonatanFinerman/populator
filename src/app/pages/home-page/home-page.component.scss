@@ -3,6 +3,7 @@
 @import "../../../assets/styles/setup/animations";
 @import "../../../assets/styles/setup/functions";
 @import "../../../assets/styles/basics/helpers";
+@import "../../../assets/styles/basics/forms";
 
 .home-page {
     gap: 40px;
@@ -66,15 +67,8 @@
         button {
             padding: 10px 30px;
             margin-top:1.25rem;
-            background-color: $clr4;
-            color: $clr2;
-            transition: 0.3s;
             animation: animateDown infinite 1.5s;
-
-            &:hover {
-                background-color: $clr2;
-                color: $clr4;
-            }
+            
         }
 
     }

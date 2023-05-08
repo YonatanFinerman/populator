@@ -1,13 +1,14 @@
 @import "../../../assets/styles/basics/helpers";
 @import "../../../assets/styles/setup/variables";
 @import "../../../assets/styles/setup/mixins";
+@import "../../../assets/styles/basics/forms";
 
 .nation-filter-modal {
-
     color: $clr4;
     background-color: $clr2;
-    width: 560px;
-    border-radius: 8px;
+    width: 100%;
+    
+    
     z-index: -1;
     position: absolute;
     left: 50%;
@@ -19,10 +20,19 @@
     box-shadow: $shadow1;
     padding: 1rem;
 
+    @include for-narrow-layout {
+        width: 620px; 
+        border-radius: 8px;
+    }
+
     &.open {
         opacity: 1;
         z-index: 5;
-        height: 500px;
+        height: 100vh;
+
+        @include for-narrow-layout {
+            height: 670px;
+        }
 
     }
     header{
@@ -45,4 +55,94 @@
         }
     }
 
-}
+    .search-state{
+        padding: 1rem 0;
+        width: 100%;
+        border-bottom: 1px solid $clr4;
+        .search-input{
+            width: 80%;
+            border: 1px solid $clr1;
+            padding: 1rem;
+            font-size: 1.25rem;
+            color: $clr4;
+            display: block;
+            margin: 1rem auto;
+            
+            &:focus{
+                outline: 2px solid $clr4;
+            }
+        }
+        .search-btn{
+            border: 2px solid $clr4;
+            font-size: 1.25rem;
+            margin: 1rem auto;
+            padding: 1rem 2.5rem;
+            border-radius: 2rem;
+            
+        }
+    }
+
+    .filter{
+        padding: 1rem 0;
+        width: 100%;
+
+        .select-input{
+            width: 60%;
+            border-radius: 8px;
+            display: block;
+            margin: 1rem auto 2rem;
+            padding: 1rem 2.5rem;
+            border: 1px solid $clr1;
+            padding: 1rem;
+            font-size: 1.25rem;
+            color: $clr4;
+            display: block;
+            margin: 1rem auto 3rem;
+            
+            &:focus{
+                outline: 2px solid $clr4;
+            }
+        }
+    
+        .range-input {
+            -webkit-appearance: none;
+            width: 40%;
+            height: 10px;
+            border-radius: 5px;
+            background-color: $clr4;
+            outline: none;
+            margin: 2rem 0.5rem ;
+          
+            &:focus {
+              outline: none;
+            }
+          
+            &::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background-color: $clr4;
+              cursor: pointer;
+            }
+          
+            &::-moz-range-thumb {
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background-color: $clr4;            
+              cursor: pointer;
+            }
+          }
+          .filter-btn{
+            padding: 0.75rem 0;
+            width: 80%;
+            border-radius: 8px;
+            border:1px solid $clr4;
+            margin: 1.5rem auto;
+            font-size: 1.25rem;            
+          }
+        }
+    }
+

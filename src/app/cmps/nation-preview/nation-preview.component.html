@@ -1,6 +1,6 @@
 <tr class="nation-preview flex space-between align-center">
     <td>{{nation.State}}</td>
     <td>{{nation.Year}}</td>
-    <td class="population">{{nation.Population}}</td>
-    <td>{{nation.populationStats! | avrGrowth}}</td>
+    <td class="population">{{nation.Population | number: '1.0-0' : 'en-US' }}</td>
+    <td>{{nation.populationStats! | avrGrowth | number: '1.0-0' : 'en-US'}}</td>
 </tr>

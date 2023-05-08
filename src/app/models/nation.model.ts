@@ -13,7 +13,9 @@ export interface NationYearPopulationStats {
     population: number
 }
 export interface NationFilter {
-    term: string
+    sortBy: string,
+    maxPopulation:number,
+    stateName:string
 }
 // export interface Nation {
 //     _id: string

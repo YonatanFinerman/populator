@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, map, retry, tap, throwError } from 'rxjs';
-import { Nation } from '../models/nation.model';
+import { BehaviorSubject, Observable, catchError, map, of, retry, tap, throwError } from 'rxjs';
+import { Nation, NationFilter } from '../models/nation.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
@@ -10,61 +10,64 @@ export class NationService {
 
   constructor(private http: HttpClient) { }
 
-  // Mock the database
-
-  //    private _nationsDb: Nation[] = [
-  //     { _id: 'p123', name: 'Penrose', age: 2, birthDate: new Date('2020-11-12') },
-  //     { _id: 'p124', name: 'Bobo', age: 6, birthDate: new Date('2021-8-30') },
-  //     { _id: 'p125', name: 'Gertrude', age: 1, birthDate: new Date('2021-11-1') },
-  //     { _id: 'p126', name: 'Popovich', age: 62, birthDate: new Date('1950-3-30') },
-  // ];
   private _nationsDb: Nation[] = []
 
   private _nations$ = new BehaviorSubject<Nation[]>([]);
   public nations$ = this._nations$.asObservable()
 
-  // private _nationFilter$ = new BehaviorSubject<NationFilter>({ term: '' });
-  // public nationFilter$ = this._nationFilter$.asObservable()
+  private _nationFilter$ = new BehaviorSubject<NationFilter>({ sortBy: '', stateName: '', maxPopulation: 40000000 });
+  public nationFilter$ = this._nationFilter$.asObservable()
 
 
-  // public query() {
-  //     const filterBy = this._nationFilter$.value
-  //     const nations = this._nationsDb.filter(({ name }) => {
-  //         return name.toLowerCase().includes(filterBy.term.toLowerCase());
-  //     });
-  //     this._nations$.next(nations);
-  // }
+
   public query() {
+    const filterBy = this._nationFilter$.value
+    let filteredNations = this._nationsDb
+    if(filterBy.maxPopulation){
+      filteredNations = this._nationsDb.filter(nation=>nation.Population<filterBy.maxPopulation)
+    }
+    if(filterBy.sortBy === 'alphabet'){
+      filteredNations = filteredNations.sort((a, b) => a.State.localeCompare(b.State))
+    }
+    if(filterBy.sortBy === 'reversedAlphabet'){
+      filteredNations = filteredNations.sort((a, b) => b.State.localeCompare(a.State))
+    }
+    if(filterBy.sortBy === 'mostPopulated'){
+      filteredNations = filteredNations.sort((a, b) => b.Population - a.Population)     
+    }
+    if(filterBy.sortBy === 'leastPopulated'){
+      filteredNations = filteredNations.sort((a, b) => a.Population - b.Population)
+    }
+    this._nations$.next(filteredNations);
+  }
+
+  public createNations(){
     let nations = this.loadFromStorage('nationDB')
     if (!nations || !nations.length) {
-      this.LoadNations()
+      this._LoadNations()
         .subscribe(ans => {
           this._nationsDb = this.loadFromStorage('nationDB')
           nations = this._nationsDb
           this._nations$.next(nations);
         })
     }
-    else{
+    else {
       console.log(nations, 'bobo')
+      this._nationsDb = nations
       this._nations$.next(nations);
     }
-    // const filterBy = this._nationFilter$.value
-    // const nations = this._nationsDb.filter(({ name }) => {
-    //     return name.toLowerCase().includes(filterBy.term.toLowerCase());
-    // });
-  
   }
 
-  public LoadNations() {
+  private _LoadNations() {
     return this.http.get<{ data: Nation[] }>('https://datausa.io/api/data?drilldowns=State&measures=Population&year=all')
       .pipe(
         map(res => res.data),
-        map(res=>{
-          let nations :Nation[] = []
-          for(let i=0; i<52;i++){
-            let currNation = res.filter(nation=>res[i]['ID State']===nation['ID State'])
-            let convertedStats = currNation.map(nation=> {return {year:nation.Year,population:nation.Population}})
-            let convertedNation = {...res[i], populationStats:convertedStats}
+        map(res => {
+          let nations: Nation[] = []
+          for (let i = 0; i < 52; i++) {
+            const currNation = res.filter(nation => res[i]['ID State'] === nation['ID State'])
+            const convertedStats = currNation.map(nation => { return { year: nation.Year, population: nation.Population } })
+            const convertedNation = { ...res[i], populationStats: convertedStats }
             nations.push(convertedNation)
           }
           return nations
@@ -78,6 +81,8 @@ export class NationService {
         })
       )
   }
+
+
 
 
   // public shouldAdoptNation() {
@@ -105,20 +110,25 @@ export class NationService {
   //     return of()
   // }
 
-  // public getById(nationId: string): Observable<Nation> {
-  //     const nation = this._nationsDb.find(nation => nation._id === nationId)
-  //     return nation ? of({ ...nation }) : of()
-  // }
+  public getByName(nationName: string): Observable<Nation> {
+    const nation = this._nationsDb.find(nation => nation.State.toLocaleLowerCase() === nationName.toLocaleLowerCase())
+    return nation ? of({ ...nation }) : of()
+  }
+
+  public getById(nationId: string): Observable<Nation> {
+    const nation = this._nationsDb.find(nation => nation['ID State'] === nationId)
+    return nation ? of({ ...nation }) : of()
+  }
 
 
   // public save(nation: Nation) {
   //     return nation._id ? this._edit(nation) : this._add(nation)
   // }
 
-  // public setFilter(nationFilter: NationFilter) {
-  //     this._nationFilter$.next(nationFilter)
-  //     this.query()
-  // }
+  public setFilter(nationFilter: NationFilter) {
+    this._nationFilter$.next(nationFilter)
+    this.query()
+  }
 
   // private _add(nation: Nation) {
   //     nation._id = this._makeId()
