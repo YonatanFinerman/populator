@@ -1,0 +1,42 @@
+@import "../../../assets/styles/setup/variables";
+@import "../../../assets/styles/setup/mixins";
+@import "../../../assets/styles/basics/helpers";
+
+.nation-details{
+    margin-top: 2.5rem;
+    .state-info{
+
+        h2{
+            font-size: 4rem;
+            margin:2rem auto;
+        }
+
+        p{
+            font-size: 1.4rem;
+            padding: 1rem 0 0;
+        }
+
+        .stats-table{
+            width: 330px;
+            margin: 1rem auto;
+            border-radius: 12px;
+            background: $bgclr1;
+
+            tr{
+                border-bottom: 2px solid $clr2;
+                transition: 0.3s;
+                &:hover{
+                    background-color: rgba($color: lighten($color: $clr4, $amount: 15), $alpha: 0.3);   
+                }
+            }
+
+            td{
+                padding: 1rem ;
+            }
+
+            tbody :last-child{
+                border-bottom:none ;
+            }
+        }
+    }
+}

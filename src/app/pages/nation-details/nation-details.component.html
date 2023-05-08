@@ -1,4 +1,26 @@
-<section class="nation-details">
-    <h2>{{nation.State}}</h2>
-    <population-chart [populationStats]="nation.populationStats ? nation.populationStats : []"></population-chart>
+<section class="nation-details flex column align-center">
+
+    <section class="state-info text-center">
+        <h2>{{nation.State}}</h2>
+        <p>Average yearly population growth: {{nation.populationStats! | avrGrowth | number: '1.0-0' : 'en-US'}}</p>
+        <p>{{nation.State}} geographical coordinates: </p>
+        <div *ngIf="coords">
+
+            <p>latitude = {{coords.lat}}</p>
+            <p>longitude = {{coords.lng}}</p>
+        </div>
+        
+        <table class="stats-table">
+            <thead><tr class="flex space-between"><td>Year</td><td>Population</td></tr></thead>
+            <tbody>
+                <tr class="flex space-between" *ngFor="let stat of populationStats" >
+                    <td>{{stat.year}}</td>
+                    <td>{{stat.population | number: '1.0-0' : 'en-US'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <population-chart class="chart" [populationStats]="nation.populationStats ? nation.populationStats : []"></population-chart>
+    
 </section>

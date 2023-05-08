@@ -15,48 +15,98 @@ export class NationService {
   private _nations$ = new BehaviorSubject<Nation[]>([]);
   public nations$ = this._nations$.asObservable()
 
+  private _mostPopulatedNation$ = new BehaviorSubject<Nation>({ 'ID State': '', State: '', "ID YEAR": 0, Year: '', Population: 0 });
+  public mostPopulatedNation$ = this._mostPopulatedNation$.asObservable()
+
   private _nationFilter$ = new BehaviorSubject<NationFilter>({ sortBy: '', stateName: '', maxPopulation: 40000000 });
   public nationFilter$ = this._nationFilter$.asObservable()
-
-
 
   public query() {
     const filterBy = this._nationFilter$.value
     let filteredNations = this._nationsDb
-    if(filterBy.maxPopulation){
-      filteredNations = this._nationsDb.filter(nation=>nation.Population<filterBy.maxPopulation)
+    if (filterBy.maxPopulation) {
+      filteredNations = this._nationsDb.filter(nation => nation.Population < filterBy.maxPopulation)
     }
-    if(filterBy.sortBy === 'alphabet'){
+    if (filterBy.sortBy === 'alphabet') {
       filteredNations = filteredNations.sort((a, b) => a.State.localeCompare(b.State))
     }
-    if(filterBy.sortBy === 'reversedAlphabet'){
+    if (filterBy.sortBy === 'reversedAlphabet') {
       filteredNations = filteredNations.sort((a, b) => b.State.localeCompare(a.State))
     }
-    if(filterBy.sortBy === 'mostPopulated'){
-      filteredNations = filteredNations.sort((a, b) => b.Population - a.Population)     
+    if (filterBy.sortBy === 'mostPopulated') {
+      filteredNations = filteredNations.sort((a, b) => b.Population - a.Population)
     }
-    if(filterBy.sortBy === 'leastPopulated'){
+    if (filterBy.sortBy === 'leastPopulated') {
       filteredNations = filteredNations.sort((a, b) => a.Population - b.Population)
     }
     this._nations$.next(filteredNations);
+    this._setMostPopulated(filteredNations)
   }
 
-  public createNations(){
-    let nations = this.loadFromStorage('nationDB')
+  public createNations() {
+    let nations = this._loadFromStorage('nationDB')
     if (!nations || !nations.length) {
       this._LoadNations()
         .subscribe(ans => {
-          this._nationsDb = this.loadFromStorage('nationDB')
+          this._nationsDb = this._loadFromStorage('nationDB')
           nations = this._nationsDb
           this._nations$.next(nations);
         })
     }
     else {
-      console.log(nations, 'bobo')
       this._nationsDb = nations
       this._nations$.next(nations);
     }
   }
+
+  public getByName(nationName: string): Observable<Nation> {
+    const nation = this._nationsDb.find(nation => nation.State.toLocaleLowerCase() === nationName.toLocaleLowerCase())
+    return nation ? of({ ...nation }) : of()
+  }
+
+  public getById(nationId: string): Observable<Nation> {
+    const nation = this._nationsDb.find(nation => nation['ID State'] === nationId)
+    return nation ? of({ ...nation }) : of()
+  }
+
+
+  public setFilter(nationFilter: NationFilter) {
+    this._nationFilter$.next(nationFilter)
+    this.query()
+  }
+
+  public getPopulationChangeStats(populationStats: NationYearPopulationStats[]) {
+    return populationStats.slice(1).map((current, index) => {
+      const previous = populationStats[index];
+      const years = `${previous.year}-${current.year}`;
+      const populationChange = current.population - previous.population;
+      return { years, populationChange };
+    })
+  }
+
+  public getCoords(stateName: string) {
+    const API_Key = 'AIzaSyCWNRrGApZar-RMJ5hDCH8zRLA2TDISlPc'
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${stateName.toLocaleLowerCase()}&key=${API_Key}`
+    return this.http.get<any>(url)
+      .pipe(
+        map(res => res.results),
+        retry(1),
+        catchError((err: HttpErrorResponse) => {
+          console.log('err:', err)
+          return throwError(() => err)
+        })
+      )
+  }
+
+private _setMostPopulated(nations:Nation[]){
+
+  const mostPopulated = nations.reduce((prev, current) => {
+    return prev.Population > current.Population ? prev : current
+  },nations[0])
+
+  console.log(mostPopulated,'most')
+  this._mostPopulatedNation$.next(mostPopulated);
+}
 
   private _LoadNations() {
     return this.http.get<{ data: Nation[] }>('https://datausa.io/api/data?drilldowns=State&measures=Population&year=all')
@@ -72,8 +122,7 @@ export class NationService {
           }
           return nations
         }),
-        tap(res1 => this.saveToStorage('nationDB', res1)),
-        tap(res1 => console.log(res1, 'brbr')),
+        tap(res1 => this._saveToStorage('nationDB', res1)),
         retry(1),
         catchError((err: HttpErrorResponse) => {
           console.log('err:', err)
@@ -82,107 +131,11 @@ export class NationService {
       )
   }
 
-
-
-
-  // public shouldAdoptNation() {
-  //     return this.http.get<{ answer: string }>('https://yesno.wtf/api')
-  //         .pipe(
-  //             map(res => res.answer),
-  //             retry(1),
-  //             catchError((err: HttpErrorResponse) => {
-  //                 console.log('err:', err)
-  //                 return throwError(() => err)
-  //             })
-  //         )
-  // }
-
-
-  // public getEmptyNation() {
-  //     return { name: '', age: 0, birthDate: new Date() }
-  // }
-
-  // public remove(nationId: string) {
-  //     const nations = this._nationsDb
-  //     const nationIdx = nations.findIndex(nation => nation._id === nationId)
-  //     nations.splice(nationIdx, 1)
-  //     this._nations$.next(nations);
-  //     return of()
-  // }
-
-  public getByName(nationName: string): Observable<Nation> {
-    const nation = this._nationsDb.find(nation => nation.State.toLocaleLowerCase() === nationName.toLocaleLowerCase())
-    return nation ? of({ ...nation }) : of()
-  }
-
-  public getById(nationId: string): Observable<Nation> {
-    const nation = this._nationsDb.find(nation => nation['ID State'] === nationId)
-    return nation ? of({ ...nation }) : of()
-  }
-
-
-  // public save(nation: Nation) {
-  //     return nation._id ? this._edit(nation) : this._add(nation)
-  // }
-
-  public setFilter(nationFilter: NationFilter) {
-    this._nationFilter$.next(nationFilter)
-    this.query()
-  }
-
-  public getPopulationChangeStats(populationStats:NationYearPopulationStats[]){
-    return populationStats.slice(1).map((current, index) => {
-      const previous = populationStats[index];
-      const years = `${previous.year}-${current.year}`;
-      const populationChange = current.population - previous.population;
-      return { years, populationChange };
-    })
-  }
-  // private _add(nation: Nation) {
-  //     nation._id = this._makeId()
-  //     this._nationsDb.push(nation)
-  //     this._nations$.next([...this._nationsDb])
-  //     return of(nation)
-  // }
-
-  // private _edit(nation: Nation) {
-  //     const nations = this._nationsDb
-  //     const nationIdx = nations.findIndex(_nation => _nation._id === nation._id)
-  //     nations.splice(nationIdx, 1, nation)
-  //     this._nations$.next([...nations])
-  //     return of(nation)
-  // }
-
-  public getCoords(stateName:string){
-    const API_Key = 'AIzaSyCWNRrGApZar-RMJ5hDCH8zRLA2TDISlPc'
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${stateName}&key=${API_Key}`
-    return this.http.get<{ data: Nation[] }>(url)
-    .pipe(
-      map(res => res.data),      
-      tap(res1 => console.log(res1, 'brbr')),
-      retry(1),
-      catchError((err: HttpErrorResponse) => {
-        console.log('err:', err)
-        return throwError(() => err)
-      })
-    )
-
-  }
-
-  private _makeId(length = 5) {
-    let text = "";
-    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  }
-
-  private saveToStorage(key: string, value: Nation[]) {
+  private _saveToStorage(key: string, value: Nation[]) {
     localStorage.setItem(key, JSON.stringify(value))
   }
 
-  private loadFromStorage(key: string) {
+  private _loadFromStorage(key: string) {
     const data = localStorage.getItem(key)
     return (data) ? JSON.parse(data) : undefined
   }

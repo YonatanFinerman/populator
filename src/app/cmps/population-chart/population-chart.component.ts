@@ -2,8 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { NationYearPopulationStats } from 'src/app/models/nation.model';
 import { NationService } from 'src/app/services/nation.service';
-// import { MarketPrice, Value } from 'src/app/models/graph.model';
-// import { lastValueFrom } from 'rxjs';
+
 Chart.register(...registerables);
 
 @Component({
@@ -18,16 +17,14 @@ export class PopulationChartComponent implements OnInit {
 
   async ngOnInit() {
 
-    // const reversedStats =
-     let populationChanges = this.nationService.getPopulationChangeStats(this.populationStats)
-      console.log(populationChanges)
+    let populationChanges = this.nationService.getPopulationChangeStats(this.populationStats)
 
-    var myChart = new Chart("myChart", {
+    let myChart = new Chart("myChart", {
       type: 'bar',
       data: {
         labels: populationChanges.map(stat => stat.years),
         datasets: [{
-          label: 'Population chart',
+          label: 'Population change chart',
           data: populationChanges.map(stat => stat.populationChange),
           backgroundColor: [
             'rgba(255, 99, 132, 1)',
@@ -37,7 +34,7 @@ export class PopulationChartComponent implements OnInit {
             'rgba(153, 102, 255, 1)',
             'rgba(255, 159, 64, 1)',
             'rgba(145, 29, 132, 1)',
-            
+
           ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
@@ -47,8 +44,8 @@ export class PopulationChartComponent implements OnInit {
             'rgba(153, 102, 255, 1)',
             'rgba(255, 159, 64, 1)',
             'rgba(145, 29, 132, 1)',
-            
-            
+
+
           ],
           borderWidth: 1
         }]
@@ -59,7 +56,7 @@ export class PopulationChartComponent implements OnInit {
             beginAtZero: true
           }
         },
-        
+
       }
     })
   }

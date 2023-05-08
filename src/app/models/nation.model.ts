@@ -5,7 +5,6 @@ export interface Nation {
     Year: string,
     'ID YEAR': number,
     populationStats?: NationYearPopulationStats[]
-
 }
 
 export interface NationYearPopulationStats {

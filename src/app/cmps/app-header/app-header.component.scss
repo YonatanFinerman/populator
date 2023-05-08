@@ -17,14 +17,14 @@
     width: 100%;
     background-color: $clr1;
     color: $clr2;
-    padding: 0.75rem 24px 0.75rem 9px;
+    padding: 0.75rem 24px;
 
     @include for-narrow-layout {
-        padding: 0.75rem 40px 0.75rem 25px;     
+        padding: 0.75rem 40px;     
     }
     
     @include for-wide-layout {
-        padding: 0.75rem 80px  0.75rem 65px;   
+        padding: 0.75rem 80px ;   
     }
     
    .login-link{

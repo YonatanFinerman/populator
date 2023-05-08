@@ -16,6 +16,7 @@ import { NationFilterComponent } from './cmps/nation-filter/nation-filter.compon
 import { NationDetailsComponent } from './pages/nation-details/nation-details.component';
 import { PopulationChartComponent } from './cmps/population-chart/population-chart.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +29,7 @@ import { PopulationChartComponent } from './cmps/population-chart/population-cha
     AvrGrowthPipe,
     NationFilterComponent,
     NationDetailsComponent,
-    PopulationChartComponent
+    PopulationChartComponent,
   ],
   imports: [
     BrowserModule,
