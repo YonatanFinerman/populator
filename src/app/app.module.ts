@@ -14,6 +14,7 @@ import { NaturalTypePipe } from './pipes/natural-type.pipe';
 import { AvrGrowthPipe } from './pipes/avr-growth.pipe';
 import { NationFilterComponent } from './cmps/nation-filter/nation-filter.component';
 import { NationDetailsComponent } from './pages/nation-details/nation-details.component';
+import { PopulationChartComponent } from './cmps/population-chart/population-chart.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NationDetailsComponent } from './pages/nation-details/nation-details.co
     NaturalTypePipe,
     AvrGrowthPipe,
     NationFilterComponent,
-    NationDetailsComponent
+    NationDetailsComponent,
+    PopulationChartComponent
   ],
   imports: [
     BrowserModule,

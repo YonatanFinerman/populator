@@ -1,1 +1,4 @@
-<p>nation-details works!</p>
+<section class="nation-details">
+    <h2>{{nation.State}}</h2>
+    <population-chart [populationStats]="nation.populationStats ? nation.populationStats : []"></population-chart>
+</section>

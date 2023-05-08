@@ -17,14 +17,5 @@ export interface NationFilter {
     maxPopulation:number,
     stateName:string
 }
-// export interface Nation {
-//     _id: string
-//     name: string
-//     age: number
-//     birthDate: Date
-// }
 
-// export interface NationFilter {
-//     term: string
-// }
 

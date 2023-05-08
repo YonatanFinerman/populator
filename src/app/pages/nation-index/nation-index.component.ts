@@ -20,7 +20,6 @@ export class NationIndexComponent implements OnInit {
 
 
   nations$!: Observable<Nation[]>
-  nationFilter!:NationFilter
   isFilterModalOpen = false
 
   ngOnInit(): void {

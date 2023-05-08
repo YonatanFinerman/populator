@@ -8,7 +8,7 @@ export class AvrGrowthPipe implements PipeTransform {
 
   transform(stats:NationYearPopulationStats[] ): number {
 
-    const totalGrowth = stats[0].population - stats[stats.length-1].population
+    const totalGrowth = stats[stats.length-1].population - stats[0].population
     const years = stats.length - 1
     const avgGrowth = totalGrowth / years
 

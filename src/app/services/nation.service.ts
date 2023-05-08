@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, map, of, retry, tap, throwError } from 'rxjs';
-import { Nation, NationFilter } from '../models/nation.model';
+import { Nation, NationFilter, NationYearPopulationStats } from '../models/nation.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
@@ -66,7 +66,7 @@ export class NationService {
           let nations: Nation[] = []
           for (let i = 0; i < 52; i++) {
             const currNation = res.filter(nation => res[i]['ID State'] === nation['ID State'])
-            const convertedStats = currNation.map(nation => { return { year: nation.Year, population: nation.Population } })
+            const convertedStats = currNation.map(nation => { return { year: nation.Year, population: nation.Population } }).reverse()
             const convertedNation = { ...res[i], populationStats: convertedStats }
             nations.push(convertedNation)
           }
@@ -130,6 +130,14 @@ export class NationService {
     this.query()
   }
 
+  public getPopulationChangeStats(populationStats:NationYearPopulationStats[]){
+    return populationStats.slice(1).map((current, index) => {
+      const previous = populationStats[index];
+      const years = `${previous.year}-${current.year}`;
+      const populationChange = current.population - previous.population;
+      return { years, populationChange };
+    })
+  }
   // private _add(nation: Nation) {
   //     nation._id = this._makeId()
   //     this._nationsDb.push(nation)
@@ -145,10 +153,26 @@ export class NationService {
   //     return of(nation)
   // }
 
+  public getCoords(stateName:string){
+    const API_Key = 'AIzaSyCWNRrGApZar-RMJ5hDCH8zRLA2TDISlPc'
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${stateName}&key=${API_Key}`
+    return this.http.get<{ data: Nation[] }>(url)
+    .pipe(
+      map(res => res.data),      
+      tap(res1 => console.log(res1, 'brbr')),
+      retry(1),
+      catchError((err: HttpErrorResponse) => {
+        console.log('err:', err)
+        return throwError(() => err)
+      })
+    )
+
+  }
+
   private _makeId(length = 5) {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (var i = 0; i < length; i++) {
+    let text = "";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
