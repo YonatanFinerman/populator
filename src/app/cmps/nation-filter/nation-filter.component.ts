@@ -24,7 +24,7 @@ export class NationFilterComponent {
 
   onCloseModal() {
     this.closeModal.emit()
-    let x = 10
+    let x = 15
   }
 
   onFilterClick(form: NgForm) {
