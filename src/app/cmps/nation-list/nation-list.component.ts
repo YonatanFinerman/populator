@@ -9,7 +9,8 @@ import { Nation } from 'src/app/models/nation.model';
 export class NationListComponent {
 
   @Input() nations!: Nation[] | null
-  
+  @Input() mostPopulatedNation!: Nation
+
   trackByFn(idx:number,nation:Nation){
     return nation['ID State']
   }

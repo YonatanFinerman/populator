@@ -19,6 +19,9 @@ export class NationFilterComponent {
   @Input() isFilterModalOpen!: boolean
   @Output() closeModal = new EventEmitter()
 
+  isValidSearch:boolean = false
+  errorMsg:string=''
+
   onCloseModal() {
     this.closeModal.emit()
   }
@@ -31,8 +34,12 @@ export class NationFilterComponent {
 
   onSearchState(stateName: string) {
     this.nationService.getByName(stateName).subscribe(ans => {
-      console.log(ans, 'this is ans')
       this.router.navigateByUrl(`/nation/${ans['ID State']}`)
+      this.isValidSearch = true
     })
+
+    if(!this.isValidSearch){
+      this.errorMsg = 'No such state!'
+    }
   }
 }

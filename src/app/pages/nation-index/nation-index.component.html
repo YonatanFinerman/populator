@@ -8,4 +8,4 @@
 <div class="shadow" (click)="onToggleFilterModal()" [class.open]="isFilterModalOpen"></div>
     
 <nation-filter (closeModal)="onToggleFilterModal()" [isFilterModalOpen]="isFilterModalOpen"></nation-filter>
-<nation-list [nations]="nations$ | async"></nation-list>
+<nation-list [nations]="nations$ | async" [mostPopulatedNation]="mostPopulatedNation"></nation-list>

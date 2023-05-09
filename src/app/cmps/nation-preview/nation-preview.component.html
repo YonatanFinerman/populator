@@ -2,6 +2,6 @@
 <tr class="nation-preview flex space-between align-center" [routerLink]="['/nation', nation['ID State']]">
     <td>{{nation.State}}</td>
     <td>{{nation.Year}}</td>
-    <td class="population">{{nation.Population | number: '1.0-0' : 'en-US' }}</td>
+    <td class="population" [class.most-populated]="isMostPopulated">{{nation.Population | number: '1.0-0' : 'en-US' }}</td>
     <td>{{nation.populationStats! | avrGrowth | number: '1.0-0' : 'en-US'}}</td>
   </tr>

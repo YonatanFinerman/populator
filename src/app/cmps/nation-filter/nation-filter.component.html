@@ -11,6 +11,7 @@
         <div class="search-state">
             <label for="stateName">Search state:</label>
             <input ngModel name="stateName" id="stateName" type="text" class="search-input" placeholder="Search state...">
+            <p class="search-error">{{errorMsg}}</p>
             <button type="button" (click)="onSearchState(form.value.stateName)" class="search-btn btn-main">Search</button>
         </div>
 

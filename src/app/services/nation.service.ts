@@ -39,7 +39,7 @@ export class NationService {
     if (filterBy.sortBy === 'leastPopulated') {
       filteredNations = filteredNations.sort((a, b) => a.Population - b.Population)
     }
-    this._nations$.next(filteredNations);
+    this._nations$.next(filteredNations)
     this._setMostPopulated(filteredNations)
   }
 
@@ -104,7 +104,6 @@ private _setMostPopulated(nations:Nation[]){
     return prev.Population > current.Population ? prev : current
   },nations[0])
 
-  console.log(mostPopulated,'most')
   this._mostPopulatedNation$.next(mostPopulated);
 }
 

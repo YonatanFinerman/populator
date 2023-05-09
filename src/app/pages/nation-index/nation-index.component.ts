@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { Observable } from 'rxjs';
 import { Nation, NationFilter } from 'src/app/models/nation.model';
 import { NationService } from 'src/app/services/nation.service';
+import { Subscription} from 'rxjs';
 
 
 
@@ -20,16 +21,28 @@ export class NationIndexComponent implements OnInit {
 
 
   nations$!: Observable<Nation[]>
+  mostPopulatedNation!: Nation
   isFilterModalOpen = false
+  subscription!: Subscription
 
   ngOnInit(): void {
     this.nationService.query()
     this.nations$ = this.nationService.nations$
+    
+    this.subscription = this.nationService.mostPopulatedNation$.subscribe(ans=>{
+      this.mostPopulatedNation = ans
+      this.cd.markForCheck()
+    })
+
     this.cd.markForCheck()
   }
 
   onToggleFilterModal() {
     this.isFilterModalOpen = !this.isFilterModalOpen
   }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
+}
 
 }

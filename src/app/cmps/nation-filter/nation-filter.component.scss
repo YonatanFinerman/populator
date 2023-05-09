@@ -29,13 +29,12 @@
         height: 100vh;
 
         @include for-narrow-layout {
-            height: 670px;
+            height: 730px;
         }
 
     }
     header{
         position: relative;
-        // padding: 1rem 0;
         border-bottom: 1px solid $clr4;
 
         h3{
@@ -73,10 +72,16 @@
         .search-btn{
             border: 2px solid $clr4;
             font-size: 1.25rem;
-            margin: 1rem auto;
+            margin: 2rem auto 1rem;
             padding: 1rem 2.5rem;
             border-radius: 2rem;
             
+        }
+        .search-error{
+            color: $clr7;
+            text-align: center;
+            position: absolute;
+            left: 5rem;
         }
     }
 
