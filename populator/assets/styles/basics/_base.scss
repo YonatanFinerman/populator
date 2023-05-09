@@ -1,0 +1,46 @@
+* {
+    box-sizing: border-box;
+    font-family: Montserrat-Regular;
+}
+
+::selection {
+    background-color: $clr1;
+    color: $clr6;
+}
+
+html {
+    font-family: Montserrat-Regular;
+    line-height: 1.6;
+}
+
+body {
+    font-size: rem(18px);
+    margin: 0;
+    margin: auto;
+    overflow-x: hidden;
+    background-color: $clr1;
+    color: $clr2;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    
+    margin: 0;
+    line-height: 1;
+}
+
+
+img {
+    width: 100%;
+}
+
+p {
+    margin: 0 ;
+}
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
